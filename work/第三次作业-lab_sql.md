@@ -5,11 +5,11 @@
 1.
 - 新建一个`university`数据库。
 
-	![](attachments/第三次作业-lab_sql/7-img-20250320193455.png)
+![](attachments/第三次作业-lab_sql/7-img-20250320193455.png)
 
 - 执行`largeRelationsInsertFile.sql`，导入数据。
 
-	![](attachments/第三次作业-lab_sql/7-img-20250320201504.png) 
+![](attachments/第三次作业-lab_sql/7-img-20250320201504.png) 
 
 2.
 - 运行第2次作业的题目三代码。
@@ -17,10 +17,12 @@
 ![](attachments/第三次作业-lab_sql/3-img-20250401221817.png)
 
 ![](attachments/第三次作业-lab_sql/7-img-846491a9b78e8a1cd236dedf4ddee53.png)
+
 结果为空，没有找到符合要求的数据。
 
 ### 题目二
 >参考[Pattern Matching](https://www.postgresql.org/docs/17/functions-matching.html)，在PG中使用至少三种方法实现找到所有以`S`开头教师的名字。
+
 ```sql
 -- 方法1 ~ LIKE  
 SELECT name  
@@ -37,6 +39,7 @@ SELECT name
 FROM instructor  
 where name ~ 'S.*';
 ```
+
 运行结果均为：
 
 ![](attachments/第三次作业-lab_sql/3-img-20250322174722.png)
