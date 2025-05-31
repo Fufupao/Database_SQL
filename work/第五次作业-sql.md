@@ -11,6 +11,7 @@
 > 2. 将该关系导出为任意文件（如SQL、Txt、CSV、JSON等）。
 
 - **创建关系**
+
 ```sql
 --- 创建关系  
 CREATE TABLE product(  
@@ -19,21 +20,29 @@ CREATE TABLE product(
     price DECIMAL(10,2)  
 );
 ```
+
 - **创建txt数据文件**
+
 ![](attachments/第五次作业-sql/5-img-20250410194808.png)
+
 - **使用COPY命令导入数据库**  
+
 ```sql
 --- 使用COPY命令导入数据库  
 COPY product FROM 'D:\Zfufupaofile\DDatagrip\Class_database\product_work5.txt'
 DELIMITER E'\t' HEADER; 
 ``` 
+
 - **将 product 表数据导出为 CSV 文件**
+
 ```sql
 --- 将 product 表数据导出为 CSV 文件  
 COPY product TO 'D:\Zfufupaofile\DDatagrip\Class_database\product_work5.csv' 
 WITH (FORMAT CSV, HEADER);
 ```
+
 ![](attachments/第五次作业-sql/5-img-20250413164148.png)
+
 ## 题目二
 
 > 1. 添加一个新的商品，编号为`666`，名字为`cake`，价格不详。
@@ -79,6 +88,7 @@ WHERE price > (SELECT AVG(price) FROM product);
 
 > 针对PostgreSQL
 > 使用参考下面的语句添加10万条商品，
+
 ```sql
 -- PostgreSQL Only
 INSERT INTO product (name, price)
@@ -87,10 +97,12 @@ SELECT
     ROUND((random() * 1000)::numeric, 2) -- 生成0到1000之间的随机价格，保留2位小数
 FROM generate_series(1, 100000);
 ```
+
 >比较`DELETE`和`TRUNCATE`的性能差异。
 
 **针对PostgreSQL比较差异：**
 - **实验代码**
+
 ```sql
 --- 比较`DELETE`和`TRUNCATE`的性能差异。
 
@@ -125,6 +137,7 @@ mydb.public> DELETE FROM product
 mydb.public> TRUNCATE TABLE product
 [2025-04-10 20:55:11] 在 10 ms 内完成
 ```
+
 - **实验结论：**
 处理同样量级的数据，`DELETE`和`TRUNCATE`相比，`DELETE`用了100ms，而`TRUNCATE`只用了10ms，`TRUNCATE`处理速度更快，性能更好。
 - **原理分析：**

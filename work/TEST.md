@@ -1,12 +1,15 @@
 > **杨馥蔓 42233047**
 ## 1. 大学数据库
 >1. 展示每个教师（ `instructor`）的工号及其授课课程段（`section`）的数量。如果仅仅考虑授课的老师，请使用单表查询完成。
+
 ```sql
 SELECT id, COUNT(*)  
 FROM teaches  
 GROUP BY id ;
 ```
+
 ![](attachments/TEST/TEST-img-20250417203339.png)
+
 >2. 对于第 1 题，请确保即使没有授课的教师也要被输出。使用JOIN 完成。
 ```sql
 SELECT instructor.id, COUNT(sec_id)  
@@ -15,8 +18,11 @@ LEFT JOIN teaches
 ON instructor.id = teaches.id  
 GROUP BY instructor.id ;
 ```
+
 ![](attachments/TEST/TEST-img-20250417203353.png)
+
 >3. 请使用标量子查询（scalar subquery）完成第 2 题。
+
 ```sql
 SELECT instructor.ID ,  
     (SELECT COUNT(sec_id)  
@@ -24,8 +30,11 @@ SELECT instructor.ID ,
      WHERE teaches.ID = instructor.ID)  
 FROM instructor;
 ```
+
 ![](attachments/TEST/TEST-img-20250417203413.png)
+
 >4.解释为什么在 `from` 子句中追加 `natural join section` 并不会影响结果。
+
 ```sql
 select course id, semester, year, sec id, avg (tot cred) 
 from takes natural join student 
@@ -40,6 +49,7 @@ having count (ID) >= 2;
 因此，即使追加了 `NATURAL JOIN section`，查询结果也不会发生改变。
 
 >5.使用 `using` 重写下面的查询：
+
 ```sql
 select * 
 from section natural join classroom;
@@ -50,13 +60,16 @@ select *
 from section inner join classroom  
 using(building, room_number);
 ```
+
 ![](attachments/TEST/TEST-img-20250417201356.png)
+
 `运行结果均为100行`
 
 ## 2. 应用题
 >1. 创建两个关系，并添加测试数据，其中 emp_bonus 的内容严格按表所示。
 
 a.  创建关系
+
 ```sql
 CREATE TABLE emp_bonus(  
     emp_no INT,  
@@ -73,6 +86,7 @@ CREATE TABLE emp(
 ```
 
 b.添加测试数据
+
 ```sql
 --- 添加 emp_bonus 数据
 INSERT INTO emp_bonus (emp_no, received, type) VALUES  
@@ -87,9 +101,11 @@ INSERT INTO emp (emp_no, ename, sal, dept_no) VALUES
 (7839, 'BOD', 7000.00, 42),  
 (7782, 'CINDY', 10000.00, 42);
 ```
+
 ![](attachments/TEST/TEST-img-20250417203000.png)
 
 >2. 请列出部门编号为42 的所有员工的总工资及其总奖金。
+
 ```sql
 SELECT  
     (SELECT SUM(sal)  
@@ -106,5 +122,6 @@ SELECT
      USING(emp_no)  
      WHERE emp.dept_no = 42) AS total_bonus; --- 计算总奖金
 ```
+
 ![](attachments/TEST/TEST-img-20250417205557.png)
 

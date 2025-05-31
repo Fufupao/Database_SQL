@@ -6,12 +6,16 @@
 - 新建一个`university`数据库。
 
 	![](attachments/第三次作业-lab_sql/7-img-20250320193455.png)
+
 - 执行`largeRelationsInsertFile.sql`，导入数据。
 
 	![](attachments/第三次作业-lab_sql/7-img-20250320201504.png) 
+
 2.
 - 运行第2次作业的题目三代码。
+
 ![](attachments/第三次作业-lab_sql/3-img-20250401221817.png)
+
 ![](attachments/第三次作业-lab_sql/7-img-846491a9b78e8a1cd236dedf4ddee53.png)
 结果为空，没有找到符合要求的数据。
 
@@ -34,6 +38,7 @@ FROM instructor
 where name ~ 'S.*';
 ```
 运行结果均为：
+
 ![](attachments/第三次作业-lab_sql/3-img-20250322174722.png)
 
 ### 题目三
@@ -46,10 +51,17 @@ where name ~ 'S.*';
 
 
 - 实现题目二
+
 ![](attachments/第三次作业-lab_sql/3-img-20250401224655.png)
+
 - 列出所有的数据库
+
 ![](attachments/第三次作业-lab_sql/3-img-20250401224839.png)
+
 - 列出当前数据库的所有表
+
 ![](attachments/第三次作业-lab_sql/3-img-20250401224719.png)
+
 - 显示某张表的关系模式
+
 ![](attachments/第三次作业-lab_sql/3-img-20250401225137.png)
