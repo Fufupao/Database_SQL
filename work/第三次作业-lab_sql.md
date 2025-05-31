@@ -1,4 +1,4 @@
-### 题目一
+## 题目一
 > 1. 新建一个`university`数据库，并执行`largeRelationsInsertFile.sql`，导入数据。
 > 2. 运行第2次作业的题目三代码。注意：把原题目中的`会计`改成`History`。  
 
@@ -20,7 +20,7 @@
 
 结果为空，没有找到符合要求的数据。
 
-### 题目二
+## 题目二
 >参考[Pattern Matching](https://www.postgresql.org/docs/17/functions-matching.html)，在PG中使用至少三种方法实现找到所有以`S`开头教师的名字。
 
 ```sql
@@ -44,7 +44,7 @@ where name ~ 'S.*';
 
 ![](attachments/第三次作业-lab_sql/3-img-20250322174722.png)
 
-### 题目三
+## 题目三
 > `psql`是PostgreSQL的命令行工具。请使用`psql`命令行工具：
 > 
 > - 实现题目二
