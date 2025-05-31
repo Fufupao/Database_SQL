@@ -20,7 +20,7 @@ CREATE TABLE product(
 );
 ```
 - **创建txt数据文件**
-![](Pasted%20image%2020250410194808.png)
+![](attachments/第五次作业-sql/5-img-20250410194808.png)
 - **使用COPY命令导入数据库**  
 ```sql
 --- 使用COPY命令导入数据库  
@@ -33,7 +33,7 @@ DELIMITER E'\t' HEADER;
 COPY product TO 'D:\Zfufupaofile\DDatagrip\Class_database\product_work5.csv' 
 WITH (FORMAT CSV, HEADER);
 ```
-![](Pasted%20image%2020250413164148.png)
+![](attachments/第五次作业-sql/5-img-20250413164148.png)
 ## 题目二
 
 > 1. 添加一个新的商品，编号为`666`，名字为`cake`，价格不详。

@@ -5,14 +5,14 @@
 1.
 - 新建一个`university`数据库。
 
-	![](屏幕截图%202025-03-20%20193455.png)
+	![](attachments/第三次作业-lab_sql/7-img-20250320193455.png)
 - 执行`largeRelationsInsertFile.sql`，导入数据。
 
-	![](屏幕截图%202025-03-20%20201504.png) 
+	![](attachments/第三次作业-lab_sql/7-img-20250320201504.png) 
 2.
 - 运行第2次作业的题目三代码。
-![](Pasted%20image%2020250401221817.png)
-![](846491a9b78e8a1cd236dedf4ddee53.png)
+![](attachments/第三次作业-lab_sql/3-img-20250401221817.png)
+![](attachments/第三次作业-lab_sql/7-img-846491a9b78e8a1cd236dedf4ddee53.png)
 结果为空，没有找到符合要求的数据。
 
 ### 题目二
@@ -34,7 +34,7 @@ FROM instructor
 where name ~ 'S.*';
 ```
 运行结果均为：
-![](Pasted%20image%2020250322174722.png)
+![](attachments/第三次作业-lab_sql/3-img-20250322174722.png)
 
 ### 题目三
 > `psql`是PostgreSQL的命令行工具。请使用`psql`命令行工具：
@@ -46,10 +46,10 @@ where name ~ 'S.*';
 
 
 - 实现题目二
-![](Pasted%20image%2020250401224655.png)
+![](attachments/第三次作业-lab_sql/3-img-20250401224655.png)
 - 列出所有的数据库
-![](Pasted%20image%2020250401224839.png)
+![](attachments/第三次作业-lab_sql/3-img-20250401224839.png)
 - 列出当前数据库的所有表
-![](Pasted%20image%2020250401224719.png)
+![](attachments/第三次作业-lab_sql/3-img-20250401224719.png)
 - 显示某张表的关系模式
-![](Pasted%20image%2020250401225137.png)
+![](attachments/第三次作业-lab_sql/3-img-20250401225137.png)

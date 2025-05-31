@@ -6,7 +6,7 @@ SELECT id, COUNT(*)
 FROM teaches  
 GROUP BY id ;
 ```
-![](Pasted%20image%2020250417203339.png)
+![](attachments/TEST/TEST-img-20250417203339.png)
 >2. 对于第 1 题，请确保即使没有授课的教师也要被输出。使用JOIN 完成。
 ```sql
 SELECT instructor.id, COUNT(sec_id)  
@@ -15,7 +15,7 @@ LEFT JOIN teaches
 ON instructor.id = teaches.id  
 GROUP BY instructor.id ;
 ```
-![](Pasted%20image%2020250417203353.png)
+![](attachments/TEST/TEST-img-20250417203353.png)
 >3. 请使用标量子查询（scalar subquery）完成第 2 题。
 ```sql
 SELECT instructor.ID ,  
@@ -24,7 +24,7 @@ SELECT instructor.ID ,
      WHERE teaches.ID = instructor.ID)  
 FROM instructor;
 ```
-![](Pasted%20image%2020250417203413.png)
+![](attachments/TEST/TEST-img-20250417203413.png)
 >4.解释为什么在 `from` 子句中追加 `natural join section` 并不会影响结果。
 ```sql
 select course id, semester, year, sec id, avg (tot cred) 
@@ -50,7 +50,7 @@ select *
 from section inner join classroom  
 using(building, room_number);
 ```
-![](Pasted%20image%2020250417201356.png)
+![](attachments/TEST/TEST-img-20250417201356.png)
 `运行结果均为100行`
 
 ## 2. 应用题
@@ -87,7 +87,7 @@ INSERT INTO emp (emp_no, ename, sal, dept_no) VALUES
 (7839, 'BOD', 7000.00, 42),  
 (7782, 'CINDY', 10000.00, 42);
 ```
-![](Pasted%20image%2020250417203000.png)
+![](attachments/TEST/TEST-img-20250417203000.png)
 
 >2. 请列出部门编号为42 的所有员工的总工资及其总奖金。
 ```sql
@@ -106,5 +106,5 @@ SELECT
      USING(emp_no)  
      WHERE emp.dept_no = 42) AS total_bonus; --- 计算总奖金
 ```
-![](Pasted%20image%2020250417205557.png)
+![](attachments/TEST/TEST-img-20250417205557.png)
 

@@ -18,10 +18,10 @@ WHERE AVG(salary) > 20000;
 **回答：** 以上SQL语句均不合法。
 **实验验证结果：** 
 1.
-![](Pasted%20image%2020250402145446.png)
+![](attachments/第四次作业-sql/4-img-20250402145446.png)
 2.
-![](Pasted%20image%2020250402145553.png)
-![](Pasted%20image%2020250402145643.png)
+![](attachments/第四次作业-sql/4-img-20250402145553.png)
+![](attachments/第四次作业-sql/4-img-20250402145643.png)
 **结论：**
 1. 使用聚合函数（如`min()`）时，如果同时选取了非聚合列（如`dept_name`），就必须用`GROUP BY`子句对非聚合列进行分组。
 2. `HAVING`子句只能用来筛选分组结果，其筛选条件里的列必须是`GROUP BY`子句中的列或者聚合函数的结果。
