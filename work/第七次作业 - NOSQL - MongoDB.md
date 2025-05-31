@@ -39,10 +39,10 @@
 
 - 4. 查
 
-![[Pasted image 20250515205049.png]]
+![[attachments/第七次作业 - NOSQL - MongoDB/Pasted image 20250515205049.png]]
 ![[Pasted image 20250515205117.png|700]]
 
-![[Pasted image 20250515205230.png]]
+![[attachments/第七次作业 - NOSQL - MongoDB/Pasted image 20250515205230.png]]
 
-![[Pasted image 20250515205250.png|700]]
+![[attachments/第七次作业 - NOSQL - MongoDB/Pasted image 20250515205250.png|700]]
 
