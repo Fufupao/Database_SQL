@@ -3,7 +3,7 @@
 ## 📁 Folder Structure
 
 - `class*_*.sql`: In-class SQL examples
-- `db_work*.sql`: Homework solutions and exercises
+- `db_work*.sql/js`: Homework solutions and exercises
 - `Test.sql`: Mid-term test solutions
 
 ## ⚠️ Notes
