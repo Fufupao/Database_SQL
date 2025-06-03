@@ -10,7 +10,14 @@
 
 - 绘制E-R图
 
+![](attachments/第八次作业-ER/第八次作业-ER-20250603161509776.png)
+
 - 写出E-R图的关系模式
+
+	- student(<u>id</u>, name, tot_cred)
+	- takes(<u>id</u>, <u>course_id</u>, <u>sec_id</u>, <u>semester</u>, <u>year</u>, grade)
+	- section(<u>course_id</u>, <u>sec_id</u>, <u>yesr</u>, <u>semester</u>)
+	- course(<u>course_id</u>, title, credits)
 
 # 题目二
 > 如果一个关系模式中只有两个属性，证明该关系模式必定属于BCNF。
