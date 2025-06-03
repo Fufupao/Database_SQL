@@ -48,16 +48,14 @@
 	- 因为A和BC的闭包都不包含所有属性ABCDE，所以不是超码，**A→BC和BC→E违反BCNF**。
 	- 因为CD是超码，所以**CD→AB满足BCNF**
 - **Step 3: BCNF分解**
-	- a. 选择	A→BC分解R
-	- 1. 分解R1(A, B, C)
-		- 因为A是候选码，所以A→BC满足BCNF
-	- 2. 分解R2(A, D, E)
-		- 因为A→BC，BC→E，所以A→ E，但A无法推出D，不是候选码，所以A→E违反BCNF
-		- b. 选择A→E分解R2
-		- 1. 分解R3(A, E)
-			- 候选码是 A,所以A→E满足BCNF
-		- 2. 分解R4(A, D)
-			- 无非平凡函数依赖，满足BCNF
+	1. 选择A→BC分解R
+		- 分解为R1(A, B, C)和R2(A, D, E)
+			- 因为A是候选码，所以A→BC满足BCNF
+			- 因为A→BC，BC→E，所以A→ E，但A无法推出D，不是候选码，所以A→E违反BCNF
+	2. 选择A→E分解R2
+		- 分解为R3(A, E)和R4(A, D)
+			- 因为候选码是A,所以A→E满足BCNF
+			- 因为R4中无非平凡函数依赖，满足BCNF
 
 - **分解结果：**
 
