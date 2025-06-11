@@ -34,7 +34,7 @@ test
 
 # WEEK 12 - FastAPI/ER
 
-## - CLASS 12 
+## - CLASS 12 | 2025/5/15
 #E-R
 
 - **实体与联系**
@@ -49,7 +49,7 @@ test
 
 # WEEK 13&14 - ER/NORM
 
-## - CLASS 13&14   2025/5/22-2025/5/29
+## - CLASS 13&14 | 2025/5/22-2025/5/29
 #BCNF
 - **第一范式（1NF）**
 
@@ -88,8 +88,51 @@ test
 	
 
 
+# WEEK 15 - THEORY
+#存储 #索引 #查询 #事务
+## - CLASS 15 | 2025/6/5
+
+- [测试题-存储/索引](https://github.com/ChenZhongPu/db-swufe/tree/master/12_theory)
+> 考虑一个数据库有单个关系`E(play_id, games_played, room_id, total_points)`，其中`play_id`是主码，所有属性均是固定宽度。假设`E`有20,000个元组，并存储在100个pages中。忽略关系的其他额外存储空间，如_page header_和_tuple header_，并有如下假设：
+> - DMBS没有任何meta-data。
+> - `E`没有任何索引。
+> - `E`没有任何页面在内存，并且DBMS能够在内存中存储无限数量的pages。
+> - `E`中元组的顺序是随机的（即堆存储）。
+
+ 1. Q1
+
+	![](attachments/NOTE_DATABASE/NOTE_DATABASE-20250605185632535.png)
+
+> D. 81-100
+> - 关系E没有任何索引，DBMS无法通过索引快速定位到满足条件的元组。因此，DBMS必须对整个表进行**全表扫描**。在行式存储中，全表扫描意味着DBMS需要读取包含关系E所有数据的每一个数据页，以便逐个检查每个元组是否满足 `WHERE` 子句的条件。
+> - 关系E存储在**100个pages**中。因此，为了执行全表扫描，DBMS需要从磁盘读取所有这100个pages。
+
+2. Q2
+
+	![](attachments/NOTE_DATABASE/NOTE_DATABASE-20250605185856965.png)
+
+> A. 1
+> - 行式存储，访问一条记录就可以同时拿到 `total_points`, `games_played`, `room_id` ，不需要额外读取其它页。
+> - 最理想的情况：这3行数据都恰好存储在同一个页面中，那么最少读取 1 个 page即可满足查询
+
+3. Q3
+
+	![](attachments/NOTE_DATABASE/NOTE_DATABASE-20250605190409696.png)
+
+> E. 10-100
 
 
-
+- 思考题
+	> 稀疏索引能否为非聚集索引？
+	```
+		不能。
+		非聚集索引的数据是无序的，要根据索引值直接定位对应的具体行，而稀疏索引不能精确定位每条记录。
+	```
+	
+	> 索引一定能提高查询性能吗？考虑下面的场景：用户关系中有 `gender`字段，并基于`gender`建立了索引，假设男女比例大致 1:1。那么在查询`SELECT nameFROMgender= 'M'`时，性能如何？
+	
+	```
+		
+	```
 
 
