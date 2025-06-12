@@ -1,40 +1,87 @@
+# NOTE_DATABASE
+
 > 杨馥蔓 | 42233047 | 数据科学与大数据技术
 
 ---
 
-# WEEK 02
+## WEEK 02 | Relational model
 
-# WEEK 03
+### - 核心内容 | CLASS 02 | 2025/3/6
 
-# WEEK 04
+- 关系- 元组(tuple) & 属性(attribute)   ~~ 表- 行&列
+- schema
+- **key：** super key、candidate key、<u>primary key</u>、foreign key
+- **关系代数：**
+	- `select` $\sigma$  （对**行**截取，水平）
+	- `project` $\Pi$  （对**列**截取，垂直，可以在属性上进行简单计算）
+	- `join` $\Join$ , `natural join`（相同名称的属性值相等）
+	- 笛卡尔积，谓词(><=≥≤≠)，逻辑词($\land\vee\neg$)
+### - 作业总结 | HW 01 | 2025/3/9
 
-## - 实验课 | 2025/3/20
+- 写关系代数的小tip： 先看题目要求的句子成分，定语为select的内容，宾语为project的对象。
 
-# WEEK 05
+## WEEK 03 | Basic SQL
+### - 核心内容 | CLASS 03 | 2025/3/13
+- **定义关系**：
+	```sql
+	CREATE TABLE r
+	--- 包含属性名、数据类型、完整性约束(如 `not null`, `primary key`等)
+	DROP TABLE r --- 删除表
+	DELETE FROM r --- 删除表数据
+	```
+- **数据类型：** `int`、`numeric(p,d)`、`float(n)`... | `char(n)`、`varchar(n)` | `null`
+	- `numeric(p,d)`： 最多有p位数字，小数点右边d位。即整数位有(p-d)位。`e.g. numeric(3,1) 可以表示31.4，不能表示314.0`
+	- **`null`：** 1)可能存在但未知(unknown)；2)可能不存在
+- 基本查询结构： **select，from，where**
+- **SQL附加操作 1：** 
+	```sql
+	SELECT DISTINCT 
+	!=
+	BETWEEN a AND b  --- ~~~ `[a,b]`
+	old_name AS new_name --- 更名 
+	SELECT *
+	ORDER BY x ASC, y DESC`
+	```
+- **注意事项：**
+	- 字符串使用**单引号`''`**
+	- 用分号`;`结尾，全部使用英文半角字符
 
-# WEEK 06
+## WEEK 04
 
-## - CLASS 06 | 2025/4/3  
+### - 核心内容 | 实验课 01 | 2025/3/20
+
+- 新建数据库：psql中输入：`CREATE DATABASE your_dbname;`
+- **SQL附加操作 2：**
+	- 引号：单引号用两个单引号表示，双引号不变
+	- 字符串函数：lower, upper, trim, length
+	- **模糊查询：** `LIKE 'a%'`  / `LIKE 'ab_'` (%匹配字符串，_ 匹配字符)
+	- 值拼接： pg使用`||`   `e.g. SELECT col1 || 'txt' || col2`  -->`{col1} txt {col2}`
+
+## WEEK 05
+
+## WEEK 06
+
+### - CLASS 06 | 2025/4/3  
 
 1.`order by random()` 用法
 
-# WEEK 07
+## WEEK 07
 
-# WEEK 08
+## WEEK 08
 
-## - 实验课 | 2025/4/17
+### - 实验课 | 2025/4/17
 
 test
 
-# WEEK 09
+## WEEK 09
 
-# WEEK 11
+## WEEK 11
 
-## - 实验课 | 2025/5/8
+### - 实验课 | 2025/5/8
 
-# WEEK 12 - FastAPI/ER
+## WEEK 12 - FastAPI/ER
 
-## - CLASS 12 | 2025/5/15
+### - CLASS 12 | 2025/5/15
 #E-R
 
 - **实体与联系**
@@ -47,10 +94,9 @@ test
 	- **实体集：** 矩形框表示，实体名在头部，属性名在下面。
 	- **联系集：** 连接一对相关实体集的菱形，联系名放在菱形内部。
 
-# WEEK 13&14 - ER/NORM
+## WEEK 13&14 - ER/NORM
 
-## - CLASS 13&14 | 2025/5/22-2025/5/29
-#BCNF
+### - CLASS 13&14 | 2025/5/22-2025/5/29
 - **第一范式（1NF）**
 
 	- 数据库的`范式设计越高阶，冗余度就越低`，同时高阶的范式一定符合低阶范式的要求，满足最低要求的范式是第一范式（1NF）。在第一范式的基础上进一步满足更多规范要求的称为第二范式（2NF），其余范式以次类推。
@@ -73,9 +119,7 @@ test
 		- $R−β$ 
 		- $(α,β)$
 
-## HOMEWORK 08 | 2025/5/30 
-#E-R    #关系模式 #BCNF 
-
+### HOMEWORK 08 | 2025/5/30 
 - **多值属性**
 
 - **E-R图转化成关系模式**
@@ -88,9 +132,8 @@ test
 	
 
 
-# WEEK 15 - THEORY
-#存储 #索引 #查询 #事务
-## - CLASS 15 | 2025/6/5
+## WEEK 15 - THEORY
+### - CLASS 15 | 2025/6/5
 
 - [测试题-存储/索引](https://github.com/ChenZhongPu/db-swufe/tree/master/12_theory)
 > 考虑一个数据库有单个关系`E(play_id, games_played, room_id, total_points)`，其中`play_id`是主码，所有属性均是固定宽度。假设`E`有20,000个元组，并存储在100个pages中。忽略关系的其他额外存储空间，如_page header_和_tuple header_，并有如下假设：
@@ -99,28 +142,27 @@ test
 > - `E`没有任何页面在内存，并且DBMS能够在内存中存储无限数量的pages。
 > - `E`中元组的顺序是随机的（即堆存储）。
 
- 1. Q1
+ - 1. Q1
 
 	![](attachments/NOTE_DATABASE/NOTE_DATABASE-20250605185632535.png)
 
-> D. 81-100
-> - 关系E没有任何索引，DBMS无法通过索引快速定位到满足条件的元组。因此，DBMS必须对整个表进行**全表扫描**。在行式存储中，全表扫描意味着DBMS需要读取包含关系E所有数据的每一个数据页，以便逐个检查每个元组是否满足 `WHERE` 子句的条件。
-> - 关系E存储在**100个pages**中。因此，为了执行全表扫描，DBMS需要从磁盘读取所有这100个pages。
+	<u> D. 81-100</u>
+	 
+	关系E没有任何索引，DBMS无法通过索引快速定位到满足条件的元组。因此，DBMS必须对整个表进行**全表扫描**。在行式存储中，全表扫描意味着DBMS需要读取包含关系E所有数据的每一个数据页，以便逐个检查每个元组是否满足 `WHERE` 子句的条件。<br>
+	而关系E存储在**100个pages**中。因此，为了执行全表扫描，DBMS需要从磁盘读取所有这100个pages。
 
-2. Q2
+<br>
+
+- 2. Q2
 
 	![](attachments/NOTE_DATABASE/NOTE_DATABASE-20250605185856965.png)
 
-> A. 1
-> - 行式存储，访问一条记录就可以同时拿到 `total_points`, `games_played`, `room_id` ，不需要额外读取其它页。
-> - 最理想的情况：这3行数据都恰好存储在同一个页面中，那么最少读取 1 个 page即可满足查询
+	<u>A. 1</u>
+	
+	行式存储：访问一条记录就可以同时拿到 `total_points`, `games_played`, `room_id` ，不需要额外读取其它页。<br>
+	最理想的情况：这3行数据都恰好存储在同一个页面中，那么最少读取 1 个 page即可满足查询
 
-3. Q3
-
-	![](attachments/NOTE_DATABASE/NOTE_DATABASE-20250605190409696.png)
-
-> E. 10-100
-
+<br>
 
 - 思考题
 	> 稀疏索引能否为非聚集索引？
@@ -128,11 +170,6 @@ test
 		不能。
 		非聚集索引的数据是无序的，要根据索引值直接定位对应的具体行，而稀疏索引不能精确定位每条记录。
 	```
-	
-	> 索引一定能提高查询性能吗？考虑下面的场景：用户关系中有 `gender`字段，并基于`gender`建立了索引，假设男女比例大致 1:1。那么在查询`SELECT nameFROMgender= 'M'`时，性能如何？
-	
-	```
-		
-	```
+
 
 
