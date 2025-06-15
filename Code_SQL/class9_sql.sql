@@ -1,4 +1,3 @@
---- 中期测试
 --- (1)
 SELECT SUM(S#)
 FROM S
