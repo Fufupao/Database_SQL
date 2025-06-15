@@ -102,14 +102,18 @@
 ## WEEK 05 | null & aggregate
 - [x] `Target：难点null；聚集函数；聚集函数 & HAVING & GROUP BY & WHERE；嵌套子查询`
 
-```
-如果大一Excel函数学的很好，那么我觉得SQL聚集函数的基础部分也会很好理解，非常非常相似。
+```txt
+如果大一Excel函数学的很好，那么我觉得SQL聚集函数的基础部分也会很好理解，非常相似。
 
-我对HAVING & GROUP BY & WHERE用法的理解：where是第一优先级，对一整块数据进行筛选，然后再执行group by，having是对group by之后的每一小块数据进行筛选。
+对HAVING & GROUP BY & WHERE用法的理解：
+where是第一优先级，对一整块数据进行筛选，然后再执行group by，
+having是对group by之后的每一小块数据进行筛选。
 ```
 
-```
-上课没听懂null，老师好像在说绕口令，unknown和null在脑子里打架。课后问了ai，下面是在deepseek的帮助下进行的总结。我认为核心就是理解null可以是 unknown，可能为真可能为假，所以作比较时结果也是unknown，因此返回null。
+```markdown
+上课没听懂null，老师好像在说绕口令，unknown和null在脑子里打架。
+课后问了ai，下面内容是在deepseek的帮助下进行的总结。
+我认为核心就是理解null可以是 unknown，可能为真可能为假，所以作比较时结果也是unknown，因此返回null。
 ```
 
 > **NULL**
