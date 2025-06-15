@@ -34,7 +34,7 @@
 
 	```sql
 	CREATE TABLE r;
-	--- 包含属性名、数据类型、完整性约束(如 `not null`, `primary key`等)
+	--- 包含属性名、数据类型、完整性约束(如 `not null`, `primary key`, `unique`等)
 	DROP TABLE r; --- 删除表
 	DELETE FROM r; --- 删除表数据
 	```
@@ -103,10 +103,10 @@
 - [x] `Target：难点null；聚集函数；聚集函数 & HAVING & GROUP BY & WHERE；嵌套子查询`
 
 ```txt
-如果大一Excel函数学的很好，那么我觉得SQL聚集函数的基础部分也会很好理解，非常相似。
+如果大一Excel函数学的不错，那么我觉得SQL聚集函数的基础部分也会很好理解，非常相似。
 
 对HAVING & GROUP BY & WHERE用法的理解：
-where是第一优先级，对一整块数据进行筛选，然后再执行group by，having是对group by之后的每一小块数据进行筛选。
+	where是第一优先级，对一整块数据进行筛选，然后再执行group by，having是对group by之后的每一小块数据进行筛选。
 ```
 
 ```markdown
@@ -184,7 +184,9 @@ where是第一优先级，对一整块数据进行筛选，然后再执行group 
 - [x] `Target：嵌套子查询；EXISTS；WITH；CASE；`
 
 ```
-比上周的内容要复杂，要多实践才能较好掌握，光看概念觉得很easy，但是一结合起来写代码就暴露出各种各样的问题。。要先记住每个子句的基本结构，不然写的时候脑子会很混乱。ai的作用在于能告诉我为什么会在这里卡住，有哪些知识点没有理解到位。
+比上周的内容要复杂，要多实践才能较好掌握，光看概念觉得很easy，但是一结合起来写代码就暴露出各种各样的问题。。
+要先记住每个子句的基本结构，不然写的时候脑子会很混乱。
+ai的作用在于能告诉我为什么会在这里卡住，有哪些知识点没有理解到位。
 ```
 
 **- 核心内容 | CLASS 06 | 2025/4/3** 
@@ -194,8 +196,8 @@ where是第一优先级，对一整块数据进行筛选，然后再执行group 
 	- **`ORDER BY random()`**：根据每行生成的随机数对整个结果集进行排序。
 	- `LIMIT 5`：从随机排序后的结果中取出前 5 条记录。
 - 嵌套子查询 2：
-	- 标量子查询，相关子查询
-	- exists：测试子查询返回的关系是否为空。记录多时比 in 好用。
+	- **标量子查询**，相关子查询
+	- **exists**：测试子查询返回的关系是否为空。记录多时比 in 好用。
 	- with：定义一个临时的关系，用于当前查询。
 	>  <u>Q：如果有工资超过 40000 的教师，输出 YES，否则输出 NO</u>
 	>  
@@ -223,22 +225,24 @@ where是第一优先级，对一整块数据进行筛选，然后再执行group 
 
 
 ## WEEK 07 | Change
-- [x] `Target：增删改；修改关系`
+- [x] `Target：增删改；修改关系；完整性约束 unique、check；排名`
 
 ```
 增删改的对象都是表r，后面再跟着条件。
-例如：
-update老师的工资是 update instructor set salary = ...
-而不是 update salary
+	例如：
+	update老师的工资是 update instructor set salary = ...
+	而不是 update salary
+
+* order by时要记得去考虑处理null
 ```
 
 **- 核心内容 | CLASS 07 | 2025/4/10** 
 
-- 增删改：
+- **增删改：**
 	1. 删 `DELETE FROM r;` 
-	- `DELETE FROM r` & `DROP TABLE r` 区别：
-	前者只删除表中所有数据行，保留表结构；后者删除整个表。
-	2. 插入 `INSERT INTO r VALUES (); `
+		- `DELETE FROM r` & `DROP TABLE r` 区别：
+		前者只删除表中所有数据行，保留表结构；后者删除整个表。
+	1. 插入 `INSERT INTO r VALUES (); `
 
 		```sql
 		--- a.插入一条数据
@@ -277,11 +281,56 @@ update老师的工资是 update instructor set salary = ...
 		
 		```
 
-- 修改关系：`ALTER TABLE`
-	1.
+- **修改关系：`ALTER TABLE`**
+	- 新增/删除/修改属性 
+
+		```sql
+		ALTER TABLE r ADD COLUMN A D; --- D为数据类型
+		ALTER TABLE r DROP COLUMN A;
+		-- 如果属性被其他关系的外码引用，那么不能直接删除。
+		ALTER TABLE r DROP COLUMN A CASCADE;
+		--- 删除 A 列与依赖于该列的任何其他内容（如外码）。*谨慎使用*。
+		
+		-- 修改属性的数据类型 
+		ALTER TABLE r ALTER COLUMN A TYPE numeric(10,2);
+		-- 修改属性名 
+		ALTER TABLE r RENAME COLUMN old_column_name TO new_column_name;
+		-- 修改关系名 
+		ALTER TABLE r RENAME TO r_new;
+		```
+	- 默认值：`SET DEFAULT`，`DROP DEFAULT`，`price  numeric DEFAULT 9.99`
+	- **更多完整性约束：**
+		- unique：`product_no integer UNIQUE`，`UNIQUE(product_no)`
+
+			```sql
+			ALTER TABLE r 
+			ADD CONSTRAINT some_name UNIQUE(A); --- 添加约束
+			```
+
+		- **check：**`CHECK (price > 0)`，`CHECK (semester IN ('Spring', 'Fall'))`
+- **排名：**
+	- **ORDER BY 降序时会把 NULL 排在最前面**
+		> ```sql
+		> SELECT id FROM instructor 
+		> ORDER BY salary DESC 
+		> LIMIT 1;
+		> ```
+		> 所以这样写是错的，怪不得 HW 04 给我扣一分，破案了
+		
+		> **解决方案：**
+		> ```sql
+		> -- 排除 NULL 
+		> SELECT salary FROM instructor 
+		> WHERE salary IS NOT NULL 
+		> ORDER BY salary DESC;
+		> -- 将 NULL 放在最后面 
+		> SELECT id, salary FROM instructor 
+		> ORDER BY salary DESC NULLS LAST;
+		> ```
 
 **- 作业总结 | HW 05 | 2025/4/11**
-- 批量导入/导出
+- **批量导入/导出**
+
 	```sql
 	COPY r FROM '...\file.txt' 
 	DELIMITER E'\t' HEADER; 
@@ -292,36 +341,173 @@ update老师的工资是 update instructor set salary = ...
 	COPY r TO 'newfile.csv' WITH (FORMAT CSV, HEADER);
 	```
 
-## WEEK 08
+- `DELETE` 和 `TRUNCATE` 比较：
 
-### - 实验课 | 2025/4/17
+	|`DELETE`|`TRUNCATE`|
+	|:-:|:-:|
+	|DML（逐行删除）|DDL（一次性删除数据页）|
+	|触发行级约束器|不触发|
+	|记录每一行的删除操作|仅记录数据页释放操作|
+	|速度慢|速度快|
 
-test
+## WEEK 08 | Join
+- [x] `Target：Join；外码的级联规则；`
 
-## WEEK 09
+**- 核心内容 | 实验课 02 | 2025/4/17**
 
-## WEEK 11
+- **Join** 
+	 
+	 1. 默认为 inner join
+	 2. 外连接可以在结果中包含 null，不丢失数据
+	 3. on 语句是连接条件，不能在 where 里混用
+	 4. `LEFT JOIN` 适合找**缺失数据**
 
-### - 实验课 | 2025/5/8
+	- **连接类型：**
 
-## WEEK 12 - FastAPI/ER
+		| Join |  | 说明 | 结果包含哪些行？ |
+		| :-------- | ------ | ---- | -------------- |
+		| **内连接** | `INNER JOIN` | 只返回两张表中匹配的记录 | 两边都匹配成功的行 |
+		| **左连接** | `LEFT JOIN` | 返回左表的所有记录，右表没有匹配则为 NULL | 左表全部，右表匹配或 NULL |
+		| **右连接** | `RIGHT JOIN` | 返回右表的所有记录，左表没有匹配则为 NULL | 右表全部，左表匹配或 NULL |
+		| **全连接** | `FULL JOIN` | 返回两表所有记录，没有匹配的地方用 NULL 填充 | 两表全部，匹配或 NULL |
+		| **交叉连接** | `CROSS JOIN` | 笛卡尔积 | 所有组合，行数 = A 行数 × B 行数 |
+	
+	- **连接条件：** natural join；on；using (A1, A2,...)
 
-### - CLASS 12 | 2025/5/15
+		- **自然连接 (natural join)：** 考虑所有相同名称属性的值相等，自动在两个表中相同名称的列上进行等值连接。**natural join 是连接的条件，不是类型。**
+		
+			```sql
+			SELECT name, course_id 
+			FROM student,takes 
+			WHERE student.id = takes.id;
+			--两种写法没有区别 
+			SELECT name, course_id 
+			FROM student NATURAL JOIN takes;
+			
+			--- 没有选课的学生不会出现在结果中。
+			--- 因为natural join本质上是natural inner join，只返回两张表都匹配成功的记录。
+			```
+			
+			但这里如果换成 `SELECT *`，在两个表里除了 `id` 外还有其他同名列的情况下，结果可能不同。
+			
+			```sql
+			FROM table_A NATURAL JOIN table_B;
+			-- 等价于
+			FROM tableA INNER JOIN tableB
+			ON tableA.common_column = tableB.common_column; -- 自然连接省略了ON
+			```
+			
+			实际使用中，`NATURAL JOIN` 用得不多。 **`INNER JOIN ... ON ...` **  更安全、可读性更高。
+			
+		- 多个自然连接：
+			
+			注意警惕自然连接中可能的不必要相等属性。
+			
+			 ```sql
+			 SELECT name, title 
+			 FROM student NATURAL JOIN takes,course 
+			 WHERE takes.course_id = course.course_id; 
+			 
+			 SELECT name, title 
+			 FROM (student NATURAL JOIN takes) 
+			 JOIN course USING (course_id);
+			 -- using后面必须加括号，即使只有一个属性。
+			 ```
 
+- 外码的级联规则：当父表被删除时，
 
+	| 级联动作 | 说明 |
+	| -------- | ---- |
+	| `NO ACTION` | 默认拒绝删除父表中被子表引用的记录 |
+	| `ON DELETE CASCADE` | 删除父表记录时，自动删除子表相关记录 |
+	| `ON DELETE SET NULL` | 删除父表记录时，子表外码设为 `NULL` |
+	| `ON DELETE SET DEFAULT` | 删除父表记录时，子表外码设为默认值 |
 
-## WEEK 13&14 - ER/NORM
+## WEEK 09 & 11 | Advanced
+
+- [x] `Target：高级数值类型；类型转换；ORM；使用Python连接数据库；`
+
+```
+在 WEEK 08 实验课的测试中，我想转换日期的类型但是当时还不会。
+ai使用了这一周学到的to_date()方法，因而对它的印象更加深刻了。
+
+WEEK 11 学到的SQLAlchemy和使用Python连接数据库的方法在后续的期末项目中派上了很大用场。
+```
+
+**- 核心内容 | CLASS 09 & 实验课 03 | 2025/4/24-2025/5/8**
+
+- 高级数值类型
+	- **日期和时间：**
+
+		| 数据类型 | 含义 | 说明 |
+		| -------- | ---- | ---- |
+		| `DATE` | 日期 | 某年某月某日，格式通常为 `YYYY-MM-DD` |
+		| `TIME` | 时间 | 一天中的时分秒，可以指定秒的小数点位数，`TIME(p)` |
+		| `TIMESTAMP` | 日期+时间 | 完整的日期和时间。也可以指定精度，`TIMESTAMP(p)` |
+		
+		- time 和 timestamp 可进一步指定时区
+		- time 格式灵活，可省略秒，可以用AM/PM 
+		- date 不能缺省月份或日期
+		- extract() 函数 `SELECT EXTRACT(year FROM timestamp '2008-08-08');` 提取字段
+	- 小数精度：**decimal**，numeric
+	- **serial：实现 id 自增**
+- 类型转换：`cast(e as t)`；**PG 中：to_xxx()方法**。`SELECT to_date('08-07 2022', 'MM-DD YYYY');`
+- **使用Python连接数据库：** 使用 psycopg
+	- 创建虚拟环境（本人习惯用 conda）
+	- 测试连接
+	
+		 ```python
+		 with psycopg.connect("dbname=mydb user=postgres port=5432 password=") as conn:
+	    with conn.cursor() as cur:
+	        cur.execute("SELECT * FROM department")
+	        records = cur.fetchall()
+	        print(records)
+		 ```
+
+**- 作业总结 | HW 07 | 2025/5/9**
+
+```
+学习使用 Mongdb 数据库完成增、删、改、查。
+和 PostgreSQL 的使用感觉很不一样，Mongdb 更像在调包来用函数。
+```
+
+## WEEK 12 | FastAPI/ER
+
+- [x] `Target：FastAPI初步了解；E-R 模型；将E-R图转化成关系模式；`
+
+```
+老师上课展示了FastAPI的使用基本方法，感觉流程很清晰，后续要分模块进行深入了解。
+```
+
+**- 核心内容 | CLASS 12 | 2025/5/15** 
+
+- **主码的选择：**
+	- one-to-many ：many 方实体的主码。
+	- many-to-many：两边的主码都要选
+- **弱实体集：** 需要依赖另外一个实体而存在的实体。
+	- 弱实体集的主码由标识实体集的主码 加上该弱实体集的分辨符构成。
+- **E-R 图绘制**  
+	- **实体集：** 矩形框表示，实体名在头部，属性名在下面。
+	- **联系集：** 连接一对相关实体集的菱形，联系名放在菱形内部。
+	- 弱实体集主码下面画虚线，使用双矩形框。
+	- 箭头从 many 指向 one 。
+	- 两条线表示实体的全参与
+	- 使用 draw. io（难用！！）
+
+## WEEK 13 & 14 | ER/NORM
+
+- [x] `Target：函数依赖；BCNF；3NF；检查是否为BCNF；BCNF分解；`
 
 ```
 这里开始听不懂。。。在 chatgpt 的帮助下学会了怎么进行 BCNF 分解，但是还不是很理解理论。
 ```
 
- **- 核心内容 | CLASS 13&14 | 2025/5/22-2025/5/29**
-- **第一范式（1 NF）**
+ **- 核心内容 | CLASS 13 & 14 | 2025/5/22-2025/5/29**
+- **第一范式（1NF）**
 
-	- 数据库的 `范式设计越高阶，冗余度就越低`，同时高阶的范式一定符合低阶范式的要求，满足最低要求的范式是第一范式（1 NF）。在第一范式的基础上进一步满足更多规范要求的称为第二范式（2 NF），其余范式以次类推。
-	- 不满足第一范式 （1 NF）的数据库就不是关系数据库。
-	- 对于一般数据库设 计，都是在 3 NF 和 BCNF 之间选择。
+	- 数据库的 `范式设计越高阶，冗余度就越低`，同时高阶的范式一定符合低阶范式的要求，满足最低要求的范式是第一范式（1NF）。在第一范式的基础上进一步满足更多规范要求的称为第二范式（2NF），其余范式以次类推。
+	- 不满足第一范式 （1NF）的数据库就不是关系数据库。
+	- 对于一般数据库设 计，都是在 3NF 和 BCNF 之间选择。
 
 - **Boyce-Codd 范式（BCNF）**
 
@@ -341,18 +527,30 @@ test
 		- $(α,β)$
 
 **- 作业总结 | HW 08 | 2025/5/30** 
-- **E-R 图绘制**  
-	- **实体集：** 矩形框表示，实体名在头部，属性名在下面。
-	- **联系集：** 连接一对相关实体集的菱形，联系名放在菱形内部。
-- **BCNF 分解** 
+
+```
+最开始不会画E-R图，网上的教程也和老师讲的不太一样，没有课件上方方正正的图好看，向同学请教后感觉也不太对。
+
+最后还是回归课件，仔仔细细研究，参考了课件上的一个很大的ER图，得到了我想要的答案。
+
+data.io用起来很不顺手，怎么画都没有书上的图看起来好看，也没有老师课件上的好看。
+但是在我的努力研究下出来的效果还是很美。
+```
+
+- **BCNF 分解**  （在 ChatGPT 帮助下总结的步骤）
 	 1) 分析候选码（能推出所有属性）
 	 2) 检查给出的函数依赖是否满足 BCNF（即左边是超码）
 	 3) 利用违反 BCNF 的函数依赖对 R 进行分解，直到所有分解均满足 BCNF
 
+```
+虽然还是不懂理论，但是会做题了，感觉做着做着隐隐约约有一点点领悟到理论的意思了。
+```
 
+## WEEK 15 & 16 | THEORY
 
-## WEEK 15 - THEORY
-### - CLASS 15 | 2025/6/5
+- [x] `Target：存储；索引；查询；事务；`
+
+**- 核心内容 | CLASS 15 & 16 | 2025/6/5-2025/6/12**
 
 - [测试题-存储/索引](https://github.com/ChenZhongPu/db-swufe/tree/master/12_theory)
 > 考虑一个数据库有单个关系 `E(play_id, games_played, room_id, total_points)`，其中 `play_id` 是主码，所有属性均是固定宽度。假设 `E` 有 20,000 个元组，并存储在 100 个 pages 中。忽略关系的其他额外存储空间，如_page header_和_tuple header_，并有如下假设：
@@ -361,7 +559,7 @@ test
 > - `E` 没有任何页面在内存，并且 DBMS 能够在内存中存储无限数量的 pages。
 > - `E` 中元组的顺序是随机的（即堆存储）。
 
- - 1. Q 1
+ 1. Q 1
 
 	![](attachments/NOTE_DATABASE/NOTE_DATABASE-20250605185632535.png)
 
@@ -370,9 +568,7 @@ test
 	关系 E 没有任何索引，DBMS 无法通过索引快速定位到满足条件的元组。因此，DBMS 必须对整个表进行**全表扫描**。在行式存储中，全表扫描意味着 DBMS 需要读取包含关系 E 所有数据的每一个数据页，以便逐个检查每个元组是否满足 `WHERE` 子句的条件。<br>
 	而关系 E 存储在**100 个 pages**中。因此，为了执行全表扫描，DBMS 需要从磁盘读取所有这 100 个 pages。
 
-<br>
-
-- 2. Q 2
+2. Q 2
 
 	![](attachments/NOTE_DATABASE/NOTE_DATABASE-20250605185856965.png)
 
@@ -381,8 +577,6 @@ test
 	行式存储：访问一条记录就可以同时拿到 `total_points`, `games_played`, `room_id` ，不需要额外读取其它页。<br>
 	最理想的情况：这 3 行数据都恰好存储在同一个页面中，那么最少读取 1 个 page 即可满足查询
 
-<br>
-
 - 思考题
 	> 稀疏索引能否为非聚集索引？
 	```
@@ -390,10 +584,32 @@ test
 		非聚集索引的数据是无序的，要根据索引值直接定位对应的具体行，而稀疏索引不能精确定位每条记录。
 	```
 
+- **事务：ACID**
+
+	| 特性 | 英文 | 说明 |
+	| ---- | ---- | ---- |
+	| 原子性 | **Atomicity** | 事务中的所有操作要么全部执行成功，要么全部不执行。中间任何一个操作失败，整个事务回滚。 |
+	| 一致性 | **Consistency** | 事务执行前后，数据库都必须处于一致的状态，遵循所有完整性约束。 |
+	| 隔离性 | **Isolation** | 各个事务的执行互不干扰，事务之间看不到彼此未提交的中间结果。 |
+	| 持久性 | **Durability** | 一旦事务提交，所做的修改永久保存在数据库中，不会因系统故障而丢失。 |
+
+	
+	|现象|含义|例子|
+	|---|---|---|
+	|Dirty Read|读到未提交事务的修改|读到了还未提交的数据|
+	|不可重复读|两次读到的数据被修改了|读到相同记录但值变化|
+	|幻读|读到记录数量变化了|有新行插入或删除|
 
 # 课程学习思考感悟
+
 - 学习数据库的过程中，老师经常就 SQL 和 Python 语言之间的区别和联系进行提问，事实上我现在对 SQL 的掌握与了解可以说是远大于 Python（因为还没有系统学习过 Python），那么未来我在自行学习 Python 的过程中，也可以多多反向思考与它与 SQL 的区别。
-- 总的说来，我更擅长根据课程范围内的要求写出代码，但学习到后面的理论部分，我就感觉非常非常难以理解。所以正如笔记所现，后面几周的笔记好像在抄书，还没有内化成自己的知识。感觉需要多学习一些计算机的知识，才能帮助我更精进数据库。
+
+- 另外，好几次作业老师扣了 1 分，但不表明是哪里扣了。虽然自己重新去检查错误的过程很困难，但同时也算是加深了对知识的印象。
+
+- 总的说来，我更擅长根据课程范围内的要求写出代码，但学习到后面的理论部分，我就感觉非常非常难以理解。所以正如笔记所现，最后几周的笔记好像在抄书，还没有内化成自己的知识。需要后续多学习一些计算机的知识，才能帮助我更精进数据库。（其实很难完成这个规划，更多是有点遗憾大学三年只有这门课算是比较由浅入深的涉及到程序、计算机相关的内容，其他的都算是面向项目编程，没有从基础理论开始学起，一直都在一知半解地写代码，可能未来我也很难有时间静下心来从头学习，但我会努力朝着这个方向靠近的）
+
+[返回自我评价内容](https://github.com/Fufupao/Database_SQL/blob/96753a83490b2b4df3f52bd47d8c7ac3d9273094/%E8%87%AA%E6%88%91%E8%AF%84%E4%BB%B7.md)
+
 
 
 
