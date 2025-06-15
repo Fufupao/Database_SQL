@@ -106,8 +106,7 @@
 如果大一Excel函数学的很好，那么我觉得SQL聚集函数的基础部分也会很好理解，非常相似。
 
 对HAVING & GROUP BY & WHERE用法的理解：
-where是第一优先级，对一整块数据进行筛选，然后再执行group by，
-having是对group by之后的每一小块数据进行筛选。
+where是第一优先级，对一整块数据进行筛选，然后再执行group by，having是对group by之后的每一小块数据进行筛选。
 ```
 
 ```markdown
@@ -185,7 +184,7 @@ having是对group by之后的每一小块数据进行筛选。
 - [x] `Target：嵌套子查询；EXISTS；WITH；CASE；`
 
 ```
-比上周的内容要复杂，要多实践才能较好掌握，光看概念觉得很easy，但是一结合起来写代码就暴露出各种各样的问题。。要先记住每个子句的基本格式，不然写的时候脑子会很混乱。ai的作用在于能告诉我为什么会在这里卡住，有哪些知识点没有理解到位。
+比上周的内容要复杂，要多实践才能较好掌握，光看概念觉得很easy，但是一结合起来写代码就暴露出各种各样的问题。。要先记住每个子句的基本结构，不然写的时候脑子会很混乱。ai的作用在于能告诉我为什么会在这里卡住，有哪些知识点没有理解到位。
 ```
 
 **- 核心内容 | CLASS 06 | 2025/4/3** 
@@ -201,7 +200,7 @@ having是对group by之后的每一小块数据进行筛选。
 	>  <u>Q：如果有工资超过 40000 的教师，输出 YES，否则输出 NO</u>
 	>  
 	>  ```sql
-	> --- exists
+	> -- exists
 	> SELECT
 	> 	CASE　
 	> 		WHEN EXISTS (
@@ -213,7 +212,7 @@ having是对group by之后的每一小块数据进行筛选。
 	> --- (FROM instructor;) 
 	> ---不需要。`CASE WHEN EXISTS(...)` 本身就是一个完整的表达式，`EXISTS` 子查询已经包含了它需要的数据源（`FROM instructor`），外层SELECT不需要再指定数据源。
 	> 
-	> --- max
+	> -- max
 	> SELECT
 	> 	CASE 
 	> 		WHEN (SELECT MAX (salary) FROM instructor) >4000
@@ -224,26 +223,74 @@ having是对group by之后的每一小块数据进行筛选。
 
 
 ## WEEK 07 | Change
+- [x] `Target：增删改；修改关系`
 
-- [x] `Target：增删改；`
+```
+增删改的对象都是表r，后面再跟着条件。
+例如：
+update老师的工资是 update instructor set salary = ...
+而不是 update salary
+```
 
 **- 核心内容 | CLASS 07 | 2025/4/10** 
 
 - 增删改：
+	1. 删 `DELETE FROM r;` 
+	- `DELETE FROM r` & `DROP TABLE r` 区别：
+	前者只删除表中所有数据行，保留表结构；后者删除整个表。
+	2. 插入 `INSERT INTO r VALUES (); `
 
-	```sql
-	--- 1. 删
-	DELETE FROM r 
-	WHERE p;
-	---- DELETE FROM r & DROP TABLE r：
-	---- 前者只删除表中所有数据行，保留表结构；后者删除整个表。
-	---- 生产实践中一般并不会真的删除数据，而是将其设置为「不可见」
-	
-	--- 2. 插入
-	```
+		```sql
+		--- a.插入一条数据
+		---- 按属性列表次序（不推荐） 
+		INSERT INTO course VALUES 
+		('CS-205', 'DatabaseSystems', 4);
+		
+		---- 指定属性（可不按 DDL 的属性次序） 
+		INSERT INTO course(course_id, title, credits)
+		VALUES('CS-205', 'DatabaseSystems',  4);
+		
+		---- 插入部分属性（剩下的属性取默认值或者null ）
+		INSERT INTO instructor(id, name) VALUES 
+		('03','Mike');
+		
+		--- b.插入元组集合 
+		INSERT INTO instructor VALUES 
+		('01','Bob','Music', 30000), 
+		('02','Alice', 'Music', 30000);
+		```
 
+	3. 更新 `UPDATE r SET p = ...;`
+
+		```sql
+		--- 所有教师的工资增加 5% 
+		UPDATE instructor 
+		SET salary = salary * 1.05;
+		
+		-- 【可以+where/case】
+		--- 给工资超过 100000 的老师涨 3% 工资，其余老师涨 5%
+		UPDATE instructor
+		SET salary = CASE 
+			WHEN salary > 100000 THEN salary * 1.03
+			ELSE salary * 1.05
+			END;
+		
+		```
+
+- 修改关系：`ALTER TABLE`
+	1.
 
 **- 作业总结 | HW 05 | 2025/4/11**
+- 批量导入/导出
+	```sql
+	COPY r FROM '...\file.txt' 
+	DELIMITER E'\t' HEADER; 
+	--- DELIMITER E'\t'：分隔符为Tab
+	--- HEADER：第一行为字段名
+	
+	-- 导出为csv文件
+	COPY r TO 'newfile.csv' WITH (FORMAT CSV, HEADER);
+	```
 
 ## WEEK 08
 
